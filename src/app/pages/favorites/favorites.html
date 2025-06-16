@@ -1,13 +1,16 @@
 <ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/home" text="Voltar"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Favoritos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Favoritos</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
   <div class="ion-padding">
     @if (error) {
@@ -57,4 +60,22 @@
       </ion-list>
     }
   </div>
+  
+  <!-- Botão flutuante para voltar à home -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="light">
+      <ion-icon name="menu-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="danger" routerLink="/home">
+        <ion-icon name="home"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="primary" routerLink="/pokemons">
+        <ion-icon name="list"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="secondary" (click)="doRefresh($event)">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

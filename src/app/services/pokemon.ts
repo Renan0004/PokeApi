@@ -36,7 +36,8 @@ export interface PokemonDetail {
   abilities: {
     ability: {
       name: string;
-    }
+    };
+    is_hidden: boolean;
   }[];
   stats: {
     base_stat: number;
@@ -47,6 +48,17 @@ export interface PokemonDetail {
   species: {
     url: string;
   };
+  moves: {
+    move: {
+      name: string;
+    };
+    version_group_details: {
+      level_learned_at: number;
+      move_learn_method: {
+        name: string;
+      };
+    }[];
+  }[];
 }
 
 export interface PokemonSpecies {

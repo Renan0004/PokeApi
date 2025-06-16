@@ -1,12 +1,14 @@
 h2 {
-  color: var(--ion-color-primary);
+  color: #4a8e3c;
   text-align: center;
   margin-top: 20px;
+  font-weight: 600;
 }
 
 p {
   text-align: center;
   margin-bottom: 30px;
+  color: #666;
 }
 
 .pokemon-container {
@@ -40,10 +42,10 @@ p {
 
 /* Estilos globais */
 :root {
-  --ion-color-primary: #3880ff;
-  --ion-color-danger: #e3350d;
-  --ion-color-warning: #ffce00;
-  --ion-background-color: #f8f9fa;
+  --ion-color-primary: #4a8e3c;
+  --ion-color-danger: #dc3545;
+  --ion-color-warning: #ffc107;
+  --ion-background-color: #ffffff;
   --ion-font-family: 'Roboto', sans-serif;
 }
 
@@ -63,17 +65,19 @@ p {
 ion-title {
   font-weight: 600;
   font-size: 1.2rem;
+  color: #333;
 }
 
 ion-content {
-  --background: #f8f9fa;
+  --background: #ffffff;
 }
 
 /* Estilos para cards */
 ion-card {
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  border: 1px solid #f0f0f0;
 }
 
 ion-card-header {
@@ -83,6 +87,7 @@ ion-card-header {
 ion-card-title {
   font-size: 1.2rem;
   font-weight: 600;
+  color: #333;
 }
 
 /* Estilos para botões */
@@ -116,5 +121,219 @@ ion-button {
   ion-content {
     --padding-start: 10%;
     --padding-end: 10%;
+  }
+}
+
+.app-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.home-content {
+  --background: #f8f9fa;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  --overflow: scroll !important;
+  flex: 1;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+  position: relative;
+  text-align: center;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.logo-container {
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 300px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.pokemon-logo {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.1));
+}
+
+.welcome-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #4a8e3c;
+  text-shadow: none;
+}
+
+.welcome-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #666;
+  font-weight: 500;
+}
+
+.button-container {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 40px;
+  z-index: 2;
+}
+
+.home-button {
+  --border-radius: 10px;
+  --box-shadow: none;
+  height: 54px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  ion-icon {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+  
+  &:first-child {
+    --background: #4a8e3c;
+    --background-activated: #3d7a32;
+    --background-focused: #3d7a32;
+  }
+  
+  &:last-child {
+    --background: #ffb74d;
+    --background-activated: #ffa726;
+    --background-focused: #ffa726;
+  }
+}
+
+.pokeball-decoration {
+  position: absolute;
+  bottom: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, rgba(240, 240, 240, 0.15) 0%, rgba(240, 240, 240, 0.15) 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 100%);
+  border: 15px solid rgba(220, 220, 220, 0.1);
+  opacity: 0.4;
+  z-index: 1;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background-color: rgba(220, 220, 220, 0.1);
+    border-radius: 50%;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background-color: rgba(220, 220, 220, 0.1);
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Media queries para responsividade */
+@media (max-width: 576px) {
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+  
+  .button-container {
+    gap: 15px;
+  }
+  
+  .home-button {
+    height: 50px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .logo-container {
+    margin-bottom: 15px;
+    max-width: 200px;
+  }
+  
+  .welcome-title {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+  }
+  
+  .welcome-subtitle {
+    margin-bottom: 20px;
+  }
+  
+  .button-container {
+    gap: 10px;
+  }
+  
+  .home-button {
+    height: 46px;
+  }
+}
+
+/* Modo escuro */
+@media (prefers-color-scheme: dark) {
+  .home-content {
+    --background: #333;
+  }
+  
+  .welcome-title {
+    color: #6fbf63;
+  }
+  
+  .welcome-subtitle {
+    color: #e0e0e0;
   }
 }

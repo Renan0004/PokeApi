@@ -1,0 +1,66 @@
+/* Garantindo visibilidade dos botões de navegação */
+ion-back-button {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  --color: white;
+}
+
+ion-buttons[slot="start"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-width: 44px;
+}
+
+/* Melhorando a acessibilidade para toque */
+ion-button, ion-back-button, ion-fab-button {
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Correções para rolagem em dispositivos móveis */
+html, body {
+  overflow: auto !important;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+ion-app {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+ion-content {
+  --overflow: auto;
+  --webkit-overflow-scrolling: touch;
+}
+
+ion-content::part(scroll) {
+  overflow-y: auto;
+}
+
+/* Correção específica para iOS */
+.ios ion-content {
+  --overflow: auto !important;
+  --webkit-overflow-scrolling: touch !important;
+}
+
+/* Garantindo que o conteúdo seja visível em dispositivos menores */
+@media (max-width: 576px) {
+  ion-content {
+    --padding-bottom: 70px; /* Espaço para botões flutuantes */
+  }
+} 

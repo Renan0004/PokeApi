@@ -1,140 +1,129 @@
-<ion-content>
+<ion-content [scrollY]="true" [fullscreen]="true">
   <ion-header class="ion-no-border">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button defaultHref="/home" text="Voltar"></ion-back-button>
       </ion-buttons>
-      <ion-title>Lista de Pokémons</ion-title>
+      <ion-title>Lista de Pokémon</ion-title>
       <ion-buttons slot="end">
-        <ion-button (click)="doRefresh($event)">
-          <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+        <ion-button routerLink="/favorites">
+          <ion-icon name="heart-outline" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
   <div class="content-container">
-    <!-- Status info -->
-    <div *ngIf="loading && pokemons.length === 0" class="loading-container animate-in">
-      <div class="pokeball-spinner"></div>
-      <h2>Carregando Pokémons...</h2>
-      <p>Preparando sua Pokédex</p>
-    </div>
-
-    <!-- Error message -->
-    <ion-card *ngIf="error" class="error-card animate-in">
-      <ion-card-content>
-        <ion-icon name="alert-circle-outline" size="large"></ion-icon>
-        <p>{{ error }}</p>
-        <ion-button (click)="retryLoading()" fill="solid" color="danger">
-          Tentar novamente
-        </ion-button>
-        <ion-button (click)="clearCacheAndReload()" fill="outline" color="medium" size="small">
-          Limpar Cache
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Pokemon count and filter info -->
-    <div class="pokemon-header" *ngIf="pokemons.length > 0">
-      <div class="pokemon-count animate-in">
-        <ion-chip color="danger">
-          <ion-icon name="paw"></ion-icon>
-          <ion-label>Total: {{ totalPokemons || '?' }}</ion-label>
+    <div class="pokemon-header">
+      <div class="pokemon-count">
+        <ion-chip>
+          <ion-icon name="list-outline"></ion-icon>
+          <ion-label>Total: {{ totalPokemons }}</ion-label>
         </ion-chip>
-        <ion-chip color="primary">
-          <ion-icon name="eye"></ion-icon>
-          <ion-label>Carregados: {{ pokemons.length }}</ion-label>
-        </ion-chip>
-        <ion-chip *ngIf="loading" color="warning" class="pulse-animation">
-          <ion-icon name="sync"></ion-icon>
-          <ion-label>Carregando...</ion-label>
-        </ion-chip>
-        <ion-chip *ngIf="filteredPokemons.length !== pokemons.length" color="success">
-          <ion-icon name="filter"></ion-icon>
-          <ion-label>Filtrados: {{ filteredPokemons.length }}</ion-label>
+        <ion-chip [class.pulse-animation]="loading">
+          <ion-icon name="eye-outline"></ion-icon>
+          <ion-label>Exibindo: {{ pokemons.length }}</ion-label>
         </ion-chip>
       </div>
-
-      <!-- Search bar -->
-      <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearchChange($event)" placeholder="Buscar Pokémon" animated class="animate-in" showCancelButton="focus" (ionCancel)="clearSearch()"></ion-searchbar>
+      
+      <ion-searchbar 
+        placeholder="Buscar Pokémon" 
+        [(ngModel)]="searchTerm" 
+        (ionInput)="filterPokemons()" 
+        [debounce]="500"
+        cancelButtonText="Cancelar"
+        showCancelButton="focus">
+      </ion-searchbar>
     </div>
 
-    <!-- Pokemon list -->
-    <div class="pokemon-grid" *ngIf="filteredPokemons.length > 0">
-      <ion-card *ngFor="let pokemon of filteredPokemons" class="pokemon-card animate-in" [routerLink]="['/pokemons', pokemon.id]" [class.loading-card]="loading && !pokemon.name.includes('-')">
-        <div class="pokemon-image-container">
-          <img [src]="pokemon.imageUrl" [alt]="pokemon.name" class="pokemon-image" loading="lazy">
-          <div class="pokemon-id">#{{ pokemon.id.toString().padStart(3, '0') }}</div>
-          <ion-button fill="clear" class="favorite-button" (click)="toggleFavorite(pokemon, $event)">
-            <ion-icon slot="icon-only" [name]="pokemon.isFavorite ? 'star' : 'star-outline'" 
-                     [color]="pokemon.isFavorite ? 'warning' : 'medium'"></ion-icon>
-          </ion-button>
-        </div>
-        <ion-card-header>
-          <ion-card-title class="pokemon-name">{{ pokemon.name | titlecase }}</ion-card-title>
-        </ion-card-header>
-        <div class="pokemon-actions">
-          <ion-button fill="clear" size="small" (click)="toggleFavorite(pokemon, $event)">
-            <ion-icon [name]="pokemon.isFavorite ? 'heart' : 'heart-outline'" 
-                     [color]="pokemon.isFavorite ? 'danger' : 'medium'"></ion-icon>
-            <ion-label>{{ pokemon.isFavorite ? 'Favorito' : 'Favoritar' }}</ion-label>
-          </ion-button>
-          <ion-button fill="clear" size="small" [routerLink]="['/pokemons', pokemon.id]">
-            <ion-icon name="information-circle-outline"></ion-icon>
-            <ion-label>Detalhes</ion-label>
-          </ion-button>
-        </div>
+    @if (loading && !pokemons.length) {
+      <div class="loading-container">
+        <div class="pokeball-spinner"></div>
+        <h2>Carregando Pokémon</h2>
+        <p>Por favor, aguarde...</p>
+      </div>
+    }
+
+    @if (error) {
+      <ion-card class="error-card">
+        <ion-card-content>
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <p>{{ error }}</p>
+          <div>
+            <ion-button (click)="loadPokemons()">
+              <ion-icon name="refresh-outline" slot="start"></ion-icon>
+              Tentar novamente
+            </ion-button>
+            <ion-button routerLink="/home">
+              <ion-icon name="home-outline" slot="start"></ion-icon>
+              Página inicial
+            </ion-button>
+          </div>
+        </ion-card-content>
       </ion-card>
-    </div>
+    }
 
-    <!-- No results message -->
-    <div *ngIf="pokemons.length > 0 && filteredPokemons.length === 0" class="no-results animate-in">
-      <ion-icon name="search-outline" size="large"></ion-icon>
-      <p>Nenhum Pokémon encontrado com "{{ searchTerm }}".</p>
-      <ion-button (click)="clearSearch()" fill="solid" color="primary">
-        Limpar Busca
-      </ion-button>
-    </div>
+    @if (!loading && !error && filteredPokemons.length === 0) {
+      <div class="no-results">
+        <ion-icon name="search-outline"></ion-icon>
+        <p>Nenhum Pokémon encontrado com "{{ searchTerm }}"</p>
+        <ion-button (click)="clearSearch()">
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+          Limpar busca
+        </ion-button>
+      </div>
+    }
 
-    <!-- Empty state message -->
-    <div *ngIf="pokemons.length === 0 && !loading" class="no-results animate-in">
-      <ion-icon name="search-outline" size="large"></ion-icon>
-      <p>Nenhum Pokémon encontrado.</p>
-      <ion-button (click)="retryLoading()" fill="solid" color="danger">
-        Tentar novamente
-      </ion-button>
-      <ion-button (click)="clearCacheAndReload()" fill="outline" color="medium" size="small">
-        Limpar Cache
-      </ion-button>
-    </div>
+    @if (!error && filteredPokemons.length > 0) {
+      <div class="pokemon-grid">
+        @for (pokemon of filteredPokemons; track pokemon.id) {
+          <div class="pokemon-card" [routerLink]="['/pokemons', pokemon.id]">
+            <ion-button 
+              class="favorite-button" 
+              fill="clear" 
+              (click)="toggleFavorite($event, pokemon.id)">
+              <ion-icon [name]="isFavorite(pokemon.id) ? 'heart' : 'heart-outline'"></ion-icon>
+            </ion-button>
+            <div class="pokemon-image-container">
+              <img [src]="pokemon.image" [alt]="pokemon.name" class="pokemon-image" loading="lazy">
+              <div class="pokemon-id">#{{ pokemon.id.toString().padStart(3, '0') }}</div>
+            </div>
+            <h3 class="pokemon-name">{{ pokemon.name }}</h3>
+          </div>
+        }
+      </div>
 
-    <!-- Infinite scroll -->
-    <ion-infinite-scroll (ionInfinite)="loadMore($event)" threshold="100px" *ngIf="filteredPokemons.length > 0 && !searchTerm">
-      <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Carregando mais Pokémons...">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+      @if (!allPokemonsLoaded && !loading) {
+        <div class="load-more-container">
+          <ion-button expand="block" (click)="loadMorePokemons()" [disabled]="loading">
+            <ion-icon name="arrow-down-outline" slot="start"></ion-icon>
+            Carregar mais
+          </ion-button>
+        </div>
+      }
+
+      @if (loading && pokemons.length > 0) {
+        <div class="loading-more">
+          <ion-spinner name="crescent"></ion-spinner>
+          <p>Carregando mais Pokémon...</p>
+        </div>
+      }
+    }
   </div>
 
-  <!-- Floating buttons -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="light">
       <ion-icon name="menu-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="danger" (click)="goToHome()">
+      <ion-fab-button color="danger" routerLink="/home">
         <ion-icon name="home"></ion-icon>
       </ion-fab-button>
       <ion-fab-button color="warning" routerLink="/favorites">
-        <ion-icon name="star"></ion-icon>
+        <ion-icon name="heart"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="primary" (click)="doRefresh($event)">
-        <ion-icon name="refresh"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button color="medium" (click)="clearCacheAndReload()">
-        <ion-icon name="trash"></ion-icon>
+      <ion-fab-button color="primary" (click)="scrollToTop()">
+        <ion-icon name="arrow-up"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>

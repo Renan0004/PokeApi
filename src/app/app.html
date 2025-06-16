@@ -1,16 +1,31 @@
 <ion-app>
-  <ion-header>
-    <ion-toolbar color="danger">
-      <ion-title>
-        <div class="header-content">
-          <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png" alt="PokéAPI" class="header-logo">
-          <span>{{ title }}</span>
+  <ion-content class="home-content" *ngIf="isHomePage()">
+    <div class="home-container">
+      <div class="logo-container">
+        <img src="assets/images/pokemon-logo.png" 
+             alt="Pokémon Logo" 
+             class="pokemon-logo"
+             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg'">
+      </div>
+      
+      <h1 class="welcome-title">Bem-vindo à Pokédex</h1>
+      <p class="welcome-subtitle">Explore e descubra todos os Pokémon</p>
+      
+      <div class="button-container">
+        <ion-button class="home-button" (click)="navigateToPokemons()">
+          <ion-icon name="search-outline" slot="start"></ion-icon>
+          Ver lista de Pokémon
+        </ion-button>
+        
+        <ion-button class="home-button" (click)="navigateToFavorites()">
+          <ion-icon name="heart-outline" slot="start"></ion-icon>
+          Meus Favoritos
+        </ion-button>
+      </div>
+      
+      <div class="pokeball-decoration"></div>
     </div>
-      </ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-content>
-    <router-outlet></router-outlet>
   </ion-content>
+  
+  <ion-router-outlet *ngIf="!isHomePage()"></ion-router-outlet>
 </ion-app> 

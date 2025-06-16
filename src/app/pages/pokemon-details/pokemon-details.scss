@@ -1,3 +1,64 @@
+/* Melhorando o header e botão de voltar */
+ion-header {
+  ion-toolbar {
+    --background: #f8f9fa;
+    --color: #333;
+    --border-color: #e0e0e0;
+    
+    ion-back-button {
+      --color: #4a8e3c;
+      --icon-font-size: 24px;
+      --padding-start: 8px;
+      --padding-end: 8px;
+      font-weight: 600;
+      opacity: 1;
+      visibility: visible !important;
+      display: block !important;
+      z-index: 999;
+    }
+    
+    ion-buttons[slot="start"] {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1;
+      min-width: 44px;
+    }
+    
+    ion-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #333;
+    }
+    
+    ion-button {
+      --color: #4a8e3c;
+      --padding-start: 12px;
+      --padding-end: 12px;
+      
+      ion-icon {
+        font-size: 22px;
+      }
+    }
+  }
+}
+
+/* Ajustando o conteúdo para rolagem */
+.ion-padding {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 80px;
+  background-color: #ffffff;
+}
+
+/* Corrigindo o problema de scroll duplo */
+ion-content {
+  --overflow: auto;
+  --background: #ffffff;
+}
+
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -13,8 +74,58 @@
   
   p {
     font-size: 1.2rem;
-    color: var(--ion-color-medium);
+    color: #666;
   }
+}
+
+/* Pokeball spinner */
+.pokeball-spinner {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #f0f0f0 50%, #ffffff 50%, #ffffff 100%);
+  border-radius: 50%;
+  border: 3px solid #ddd;
+  position: relative;
+  animation: spin 2s linear infinite;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    z-index: 2;
+  }
+  
+  &:after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 1.5px);
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #ddd;
+    z-index: 1;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 20px 0;
+  color: #dc3545;
 }
 
 .pokemon-container {
@@ -37,10 +148,11 @@
   align-items: center;
   width: 100%;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, #f6f6f6 0%, #e9e9e9 100%);
+  background: #ffffff;
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
 }
 
 .pokemon-image-container {
@@ -57,7 +169,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
   transition: transform 0.3s ease;
   
   &:hover {
@@ -69,7 +181,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.3);
   color: white;
   padding: 5px 10px;
   border-radius: 10px 0 0 0;
@@ -77,30 +189,57 @@
   font-size: 0.9rem;
 }
 
+.pokemon-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .pokemon-name {
   font-size: 2.2rem;
   font-weight: bold;
   margin: 10px 0;
   text-transform: capitalize;
-  color: var(--ion-color-dark);
+  color: #333;
   text-align: center;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: none;
+}
+
+.segment-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: none;
+  border: 1px solid #f0f0f0;
+  background-color: #f9f9f9;
 }
 
 ion-segment {
   --background: transparent;
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto;
   
   ion-segment-button {
-    --indicator-color: var(--ion-color-primary);
-    --color-checked: var(--ion-color-primary);
-    --color: var(--ion-color-medium);
+    --indicator-color: #4a8e3c;
+    --color-checked: #ffffff;
+    --color: #666;
+    --background-checked: #4a8e3c;
+    --background-hover: #e8f5e9;
+    --background-focused: #e8f5e9;
     font-weight: 600;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+    
+    ion-icon {
+      margin-right: 5px;
+    }
   }
+}
+
+.details-container {
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .details-list {
@@ -108,150 +247,245 @@ ion-segment {
   margin-top: 20px;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+  background-color: #ffffff;
   
-  ion-item {
+  .detail-item {
     --padding-start: 16px;
     --padding-end: 16px;
     --padding-top: 12px;
     --padding-bottom: 12px;
     --inner-padding-end: 0;
+    --background: #ffffff;
+    --background-hover: #f9f9f9;
+    --background-activated: #f5f5f5;
     
     &:not(:last-child) {
-      --border-color: rgba(0, 0, 0, 0.05);
+      --border-color: #f0f0f0;
       --border-width: 0 0 1px 0;
       --border-style: solid;
+    }
+    
+    ion-icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
     }
   }
 }
 
 ion-item h2 {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 1.1rem;
-  color: var(--ion-color-primary);
+  color: #333;
   margin-bottom: 5px;
 }
 
 ion-item p {
   font-size: 1rem;
-  color: var(--ion-color-dark);
+  color: #666;
   white-space: normal;
 }
 
 .types-container {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  margin: 20px 0;
+  justify-content: center;
   gap: 10px;
+  margin: 10px 0;
 }
 
 ion-chip {
-  padding: 8px 15px;
+  --background: #f0f0f0;
+  --color: #333;
   font-weight: 600;
-  text-transform: capitalize;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  padding: 4px 12px;
+  height: 28px;
+  border: none;
+  box-shadow: none;
   
-  &:hover {
-    transform: translateY(-2px);
+  ion-icon {
+    margin-right: 4px;
+  }
+  
+  &.type-grass {
+    --background: rgba(120, 200, 80, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-poison {
+    --background: rgba(160, 64, 160, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-fire {
+    --background: rgba(240, 128, 48, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-water {
+    --background: rgba(104, 144, 240, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-electric {
+    --background: rgba(248, 208, 48, 0.7);
+    --color: #333333;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-ice {
+    --background: rgba(152, 216, 216, 0.7);
+    --color: #333333;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-fighting {
+    --background: rgba(192, 48, 40, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-ground {
+    --background: rgba(224, 192, 104, 0.7);
+    --color: #333333;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-flying {
+    --background: rgba(168, 144, 240, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-psychic {
+    --background: rgba(248, 88, 136, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-bug {
+    --background: rgba(168, 184, 32, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-rock {
+    --background: rgba(184, 160, 56, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-ghost {
+    --background: rgba(112, 88, 152, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-dragon {
+    --background: rgba(112, 56, 248, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-dark {
+    --background: rgba(112, 88, 72, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-steel {
+    --background: rgba(184, 184, 208, 0.7);
+    --color: #333333;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-fairy {
+    --background: rgba(238, 153, 172, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
+  }
+  
+  &.type-normal {
+    --background: rgba(168, 168, 120, 0.7);
+    --color: #ffffff;
+    border: none;
+    font-weight: 500;
   }
 }
 
-/* Pokemon type colors */
-.type-grass {
-  background-color: #78c850;
-  color: white;
+.actions-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+  ion-button {
+    --border-radius: 10px;
+    margin: 0;
+    height: 48px;
+    font-size: 1rem;
+    font-weight: 500;
+    
+    &:first-child {
+      --background: #4a8e3c;
+      --background-activated: #3d7a32;
+      --background-focused: #3d7a32;
+      --box-shadow: none;
+    }
+    
+    &:nth-child(2) {
+      --background: #ffb74d;
+      --background-activated: #ffa726;
+      --background-focused: #ffa726;
+      --box-shadow: none;
+    }
+    
+    &:last-child {
+      --background: #f5f5f5;
+      --color: #333;
+      --background-activated: #e0e0e0;
+      --background-focused: #e0e0e0;
+      --box-shadow: none;
+      border: 1px solid #e0e0e0;
+    }
+    
+    ion-icon {
+      margin-right: 8px;
+      font-size: 1.2rem;
+    }
+  }
 }
 
-.type-fire {
-  background-color: #f08030;
-  color: white;
-}
-
-.type-water {
-  background-color: #6890f0;
-  color: white;
-}
-
-.type-electric {
-  background-color: #f8d030;
-  color: black;
-}
-
-.type-ice {
-  background-color: #98d8d8;
-  color: black;
-}
-
-.type-fighting {
-  background-color: #c03028;
-  color: white;
-}
-
-.type-poison {
-  background-color: #a040a0;
-  color: white;
-}
-
-.type-ground {
-  background-color: #e0c068;
-  color: black;
-}
-
-.type-flying {
-  background-color: #a890f0;
-  color: white;
-}
-
-.type-psychic {
-  background-color: #f85888;
-  color: white;
-}
-
-.type-bug {
-  background-color: #a8b820;
-  color: white;
-}
-
-.type-rock {
-  background-color: #b8a038;
-  color: white;
-}
-
-.type-ghost {
-  background-color: #705898;
-  color: white;
-}
-
-.type-dragon {
-  background-color: #7038f8;
-  color: white;
-}
-
-.type-dark {
-  background-color: #705848;
-  color: white;
-}
-
-.type-steel {
-  background-color: #b8b8d0;
-  color: black;
-}
-
-.type-fairy {
-  background-color: #ee99ac;
-  color: black;
-}
-
-.type-normal {
-  background-color: #a8a878;
-  color: white;
-}
-
-/* Responsive styles */
+/* Ajustes para telas menores */
 @media (max-width: 576px) {
+  .pokemon-header {
+    padding: 15px;
+  }
+  
   .pokemon-image-container {
     width: 150px;
     height: 150px;
@@ -261,12 +495,46 @@ ion-chip {
     font-size: 1.8rem;
   }
   
+  .types-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .details-list {
+    margin-top: 10px;
+  }
+  
+  .actions-container {
+    padding: 0 10px;
+  }
+  
   ion-item h2 {
     font-size: 1rem;
   }
   
   ion-item p {
     font-size: 0.9rem;
+  }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 360px) {
+  .pokemon-image-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .pokemon-name {
+    font-size: 1.5rem;
+  }
+  
+  ion-segment-button {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    
+    ion-label {
+      font-size: 0.8rem;
+    }
   }
 }
 
@@ -300,7 +568,15 @@ ion-chip {
     ion-item {
       border-radius: 10px;
       margin: 5px;
-      --background: rgba(255, 255, 255, 0.8);
+      --background: #ffffff;
+    }
+  }
+  
+  .actions-container {
+    flex-direction: row;
+    
+    ion-button {
+      flex: 1;
     }
   }
 }
@@ -332,7 +608,113 @@ ion-chip {
     grid-gap: 15px;
   }
   
-  ion-segment {
+  .segment-container {
     max-width: 500px;
+  }
+  
+  .actions-container {
+    flex-direction: row;
+    max-width: 600px;
+    margin: 30px auto 0;
+  }
+}
+
+/* Ajustes para orientação paisagem em dispositivos móveis */
+@media (max-height: 500px) and (orientation: landscape) {
+  .pokemon-container {
+    padding: 5px;
+  }
+  
+  .pokemon-header {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .pokemon-image-container {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .pokemon-name {
+    font-size: 1.5rem;
+    margin: 5px 0;
+  }
+  
+  .segment-container {
+    margin: 10px auto;
+  }
+  
+  .details-list {
+    margin-top: 10px;
+  }
+  
+  .detail-item {
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+  }
+  
+  .actions-container {
+    margin-top: 10px;
+  }
+}
+
+.content-container {
+  width: 100%;
+  margin: 20px 0;
+  animation: fade-in 0.5s ease-in-out;
+}
+
+.stats-container {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.stats-list {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+  background-color: #ffffff;
+  
+  .stat-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --inner-padding-end: 0;
+    --background: #ffffff;
+    --background-hover: #f9f9f9;
+    --background-activated: #f5f5f5;
+    
+    &:not(:last-child) {
+      --border-color: #f0f0f0;
+      --border-width: 0 0 1px 0;
+      --border-style: solid;
+    }
+    
+    h2 {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    ion-progress-bar {
+      height: 10px;
+      border-radius: 5px;
+      --buffer-background: #f5f5f5;
+      --progress-background: #4a8e3c;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      text-align: right;
+      font-weight: 600;
+      color: #666;
+      font-size: 1rem;
+      margin-top: 5px;
+    }
   }
 }

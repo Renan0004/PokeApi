@@ -1,7 +1,7 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonContent } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { PokemonService, PokemonListResponse } from '../../services/pokemon';
 import { FavoritesService } from '../../services/favorites';
@@ -11,6 +11,7 @@ interface PokemonItem {
   name: string;
   imageUrl: string;
   isFavorite: boolean;
+  image?: string; // Adicionando propriedade image como alternativa para imageUrl
 }
 
 @Component({
@@ -22,6 +23,8 @@ interface PokemonItem {
   styleUrls: ['./pokemon-list.scss']
 })
 export class PokemonList implements OnInit {
+  @ViewChild(IonContent) content?: IonContent;
+  
   pokemons: PokemonItem[] = [];
   filteredPokemons: PokemonItem[] = [];
   offset = 0;
@@ -30,6 +33,7 @@ export class PokemonList implements OnInit {
   loading = false;
   error: string | null = null;
   searchTerm: string = '';
+  allPokemonsLoaded = false;
 
   constructor(
     private pokemonService: PokemonService,
@@ -61,12 +65,16 @@ export class PokemonList implements OnInit {
             id,
             name: pokemon.name,
             imageUrl: this.pokemonService.getImageUrl(id),
+            image: this.pokemonService.getImageUrl(id), // Adicionando image como cópia de imageUrl
             isFavorite: this.favoritesService.isFavorite(id)
           };
         });
         
         console.log('Processed pokemon details:', pokemonDetails);
         this.updatePokemonList(pokemonDetails, event);
+        
+        // Verificar se todos os pokémons foram carregados
+        this.allPokemonsLoaded = this.pokemons.length >= this.totalPokemons;
       },
       error: (err) => {
         console.error('Error loading pokemons:', err);
@@ -105,12 +113,42 @@ export class PokemonList implements OnInit {
     }
   }
 
-  toggleFavorite(pokemon: PokemonItem, event: Event) {
+  // Método para carregar mais pokémons (usado no botão)
+  loadMorePokemons() {
+    this.offset += this.limit;
+    this.loadPokemons();
+  }
+
+  // Método para visualizar detalhes do pokémon
+  viewPokemonDetails(id: number) {
+    this.router.navigate(['/pokemons', id]);
+  }
+
+  // Método para filtrar pokémons (usado no ionInput)
+  filterPokemons() {
+    this.applyFilter();
+  }
+
+  // Método para verificar se um pokémon é favorito
+  isFavorite(id: number): boolean {
+    return this.favoritesService.isFavorite(id);
+  }
+
+  // Método corrigido para alternar favorito
+  toggleFavorite(event: Event, id: number) {
     event.stopPropagation();
-    event.preventDefault();
     
-    this.favoritesService.toggleFavorite(pokemon.id);
-    pokemon.isFavorite = this.favoritesService.isFavorite(pokemon.id);
+    this.favoritesService.toggleFavorite(id);
+    // Atualiza o status de favorito na lista
+    const pokemon = this.pokemons.find(p => p.id === id);
+    if (pokemon) {
+      pokemon.isFavorite = this.favoritesService.isFavorite(id);
+    }
+  }
+
+  // Método para rolar para o topo
+  scrollToTop() {
+    this.content?.scrollToTop(500);
   }
 
   doRefresh(event: any) {

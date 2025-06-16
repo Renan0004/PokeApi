@@ -157,6 +157,7 @@ import { CommonModule } from '@angular/common';
     .button-container {
       position: relative;
       width: 100%;
+      cursor: pointer;
       
       &:before {
         content: '';
@@ -173,6 +174,15 @@ import { CommonModule } from '@angular/common';
         mask-composite: exclude;
         opacity: 0.7;
       }
+      
+      &:hover {
+        transform: translateY(-2px);
+        transition: transform 0.3s ease;
+      }
+      
+      &:active {
+        transform: translateY(1px);
+      }
     }
     
     .main-button {
@@ -183,6 +193,10 @@ import { CommonModule } from '@angular/common';
       --box-shadow: 0 8px 15px rgba(227, 53, 13, 0.4);
       letter-spacing: 0.5px;
       margin: 0;
+      --background: linear-gradient(135deg, #ff7b00, #e3350d);
+      --background-activated: linear-gradient(135deg, #e36d00, #c52d0c);
+      --background-hover: linear-gradient(135deg, #ff7b00, #e3350d);
+      cursor: pointer;
     }
     
     .secondary-button {
@@ -192,6 +206,10 @@ import { CommonModule } from '@angular/common';
       height: 64px;
       --box-shadow: 0 8px 15px rgba(255, 206, 0, 0.3);
       margin: 0;
+      --background: linear-gradient(135deg, #ffce00, #ffa500);
+      --background-activated: linear-gradient(135deg, #e6b800, #e69500);
+      --background-hover: linear-gradient(135deg, #ffce00, #ffa500);
+      cursor: pointer;
     }
     
     .button-text {
@@ -251,20 +269,111 @@ import { CommonModule } from '@angular/common';
         padding: 20px;
       }
       
-      .pokemon-mascot {
-        width: 100px;
+      .main-button,
+      .secondary-button {
+        height: 56px;
+        font-size: 1rem;
       }
       
       .button-text {
         font-size: 1rem;
       }
+      
+      .feature-item {
+        min-width: 80px;
+        font-size: 0.9rem;
+      }
+    }
+    
+    /* Melhorias para telas muito pequenas */
+    @media (max-width: 360px) {
+      .welcome-title {
+        font-size: 1.5rem;
+      }
+      
+      .button-text {
+        font-size: 0.9rem;
+      }
+      
+      .main-button,
+      .secondary-button {
+        height: 50px;
+      }
+      
+      .pokemon-mascot {
+        width: 100px;
+      }
+      
+      .pokemon-logo {
+        max-width: 180px;
+      }
+    }
+    
+    /* Melhorias para telas muito grandes */
+    @media (min-width: 1200px) {
+      .welcome-card {
+        max-width: 800px;
+      }
+      
+      .welcome-title {
+        font-size: 2.5rem;
+      }
+      
+      .welcome-text {
+        font-size: 1.2rem;
+      }
+      
+      .button-text {
+        font-size: 1.3rem;
+      }
+      
+      .main-button,
+      .secondary-button {
+        height: 70px;
+      }
+    }
+    
+    /* Ajustes para orientação paisagem em dispositivos móveis */
+    @media (max-height: 600px) and (orientation: landscape) {
+      .home-container {
+        padding: 10px;
+      }
+      
+      .pokemon-mascot {
+        width: 80px;
+      }
+      
+      .welcome-card {
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      
+      .welcome-title {
+        margin-bottom: 10px;
+      }
+      
+      .welcome-text {
+        margin-bottom: 15px;
+      }
+      
+      .action-buttons {
+        margin-top: 20px;
+        flex-direction: row;
+        gap: 15px;
+      }
+      
+      .features-list {
+        margin-bottom: 15px;
+      }
+      
+      .footer-info {
+        padding-top: 10px;
+      }
     }
   `]
 })
 export class Home implements OnInit {
-  constructor() {
-    console.log('Home component constructor called');
-  }
+  constructor() { }
 
   ngOnInit() {
     console.log('Home component initialized');

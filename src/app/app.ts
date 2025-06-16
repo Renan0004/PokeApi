@@ -1,21 +1,33 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, IonicModule, HttpClientModule, RouterOutlet],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [CommonModule, IonicModule, RouterLink],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss'],
 })
 export class App implements OnInit {
   protected title = 'Pokedex';
 
+  constructor(public router: Router) {}
+
   ngOnInit() {
     console.log('App component initialized');
+  }
+
+  navigateToPokemons() {
+    this.router.navigate(['/pokemons']);
+  }
+
+  navigateToFavorites() {
+    this.router.navigate(['/favorites']);
+  }
+
+  isHomePage(): boolean {
+    return this.router.url === '/' || this.router.url === '/home';
   }
 }

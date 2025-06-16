@@ -1,16 +1,13 @@
-<ion-content>
-  <ion-header>
-    <ion-toolbar color="primary">
+<ion-content [scrollY]="true" [fullscreen]="true">
+  <ion-header class="ion-no-border">
+    <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-button (click)="goBack()">
-          <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-        </ion-button>
+        <ion-back-button defaultHref="/pokemons" text="Voltar"></ion-back-button>
       </ion-buttons>
-      <ion-title *ngIf="pokemon" class="ion-text-capitalize">{{ pokemon.name }}</ion-title>
+      <ion-title>Detalhes do Pokémon</ion-title>
       <ion-buttons slot="end">
         <ion-button (click)="toggleFavorite()">
-          <ion-icon slot="icon-only" [name]="isFavorite ? 'star' : 'star-outline'" 
-                    [color]="isFavorite ? 'warning' : 'light'"></ion-icon>
+          <ion-icon [name]="isFavorite ? 'heart' : 'heart-outline'" [color]="isFavorite ? 'danger' : ''"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
@@ -18,14 +15,20 @@
 
   <div class="ion-padding">
     @if (error) {
-      <ion-text color="danger">
-        <p>{{ error }}</p>
-      </ion-text>
+      <div class="error-container">
+        <ion-text color="danger">
+          <p class="error-message">{{ error }}</p>
+          <ion-button expand="block" (click)="goBack()" color="medium">
+            <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+            Voltar
+          </ion-button>
+        </ion-text>
+      </div>
     }
 
     @if (loading) {
       <div class="loading-container">
-        <ion-spinner name="crescent"></ion-spinner>
+        <div class="pokeball-spinner"></div>
         <p>Carregando detalhes...</p>
       </div>
     }
@@ -38,37 +41,126 @@
                  alt="{{ pokemon.name }}" class="pokemon-image">
             <div class="pokemon-id">#{{ pokemon.id.toString().padStart(3, '0') }}</div>
           </div>
-          <h1 class="pokemon-name ion-text-capitalize">{{ pokemon.name }}</h1>
+          <div class="pokemon-info">
+            <h1 class="pokemon-name ion-text-capitalize">{{ pokemon.name }}</h1>
+            <div class="types-container">
+              @for (type of pokemon.types; track type.type.name) {
+                <ion-chip [class]="'type-' + type.type.name">
+                  <ion-icon name="flame" *ngIf="type.type.name === 'fire'"></ion-icon>
+                  <ion-icon name="leaf" *ngIf="type.type.name === 'grass'"></ion-icon>
+                  <ion-icon name="water" *ngIf="type.type.name === 'water'"></ion-icon>
+                  <ion-icon name="flash" *ngIf="type.type.name === 'electric'"></ion-icon>
+                  <ion-icon name="snow" *ngIf="type.type.name === 'ice'"></ion-icon>
+                  <ion-icon name="fitness" *ngIf="type.type.name === 'fighting'"></ion-icon>
+                  <ion-icon name="skull" *ngIf="type.type.name === 'poison'"></ion-icon>
+                  <ion-icon name="earth" *ngIf="type.type.name === 'ground'"></ion-icon>
+                  <ion-icon name="airplane" *ngIf="type.type.name === 'flying'"></ion-icon>
+                  <ion-icon name="eye" *ngIf="type.type.name === 'psychic'"></ion-icon>
+                  <ion-icon name="bug" *ngIf="type.type.name === 'bug'"></ion-icon>
+                  <ion-icon name="cube" *ngIf="type.type.name === 'rock'"></ion-icon>
+                  <ion-icon name="body" *ngIf="type.type.name === 'ghost'"></ion-icon>
+                  <ion-icon name="thunderstorm" *ngIf="type.type.name === 'dragon'"></ion-icon>
+                  <ion-icon name="moon" *ngIf="type.type.name === 'dark'"></ion-icon>
+                  <ion-icon name="construct" *ngIf="type.type.name === 'steel'"></ion-icon>
+                  <ion-icon name="heart" *ngIf="type.type.name === 'fairy'"></ion-icon>
+                  <ion-icon name="ellipse" *ngIf="type.type.name === 'normal'"></ion-icon>
+                  {{ type.type.name === 'fire' ? 'Fogo' : 
+                     type.type.name === 'grass' ? 'Planta' : 
+                     type.type.name === 'water' ? 'Água' : 
+                     type.type.name === 'electric' ? 'Elétrico' : 
+                     type.type.name === 'ice' ? 'Gelo' : 
+                     type.type.name === 'fighting' ? 'Lutador' : 
+                     type.type.name === 'poison' ? 'Venenoso' : 
+                     type.type.name === 'ground' ? 'Terra' : 
+                     type.type.name === 'flying' ? 'Voador' : 
+                     type.type.name === 'psychic' ? 'Psíquico' : 
+                     type.type.name === 'bug' ? 'Inseto' : 
+                     type.type.name === 'rock' ? 'Pedra' : 
+                     type.type.name === 'ghost' ? 'Fantasma' : 
+                     type.type.name === 'dragon' ? 'Dragão' : 
+                     type.type.name === 'dark' ? 'Sombrio' : 
+                     type.type.name === 'steel' ? 'Metálico' : 
+                     type.type.name === 'fairy' ? 'Fada' : 'Normal' }}
+                </ion-chip>
+              }
+            </div>
+          </div>
         </div>
 
-        <ion-segment value="details" class="ion-margin-top">
+        <ion-segment [(ngModel)]="selectedSegment" class="ion-margin-top segment-container">
           <ion-segment-button value="details">
+            <ion-icon name="information-circle-outline"></ion-icon>
             <ion-label>Detalhes</ion-label>
           </ion-segment-button>
           <ion-segment-button value="stats">
+            <ion-icon name="stats-chart-outline"></ion-icon>
             <ion-label>Status</ion-label>
           </ion-segment-button>
         </ion-segment>
 
-        <ion-list class="details-list">
-          @for (detail of pokemonDetails; track detail.label) {
-            <ion-item>
-              <ion-label>
-                <h2>{{ detail.label }}</h2>
-                <p>{{ detail.value }}</p>
-              </ion-label>
-            </ion-item>
+        <div class="content-container">
+          @if (selectedSegment === 'details') {
+            <div class="details-container">
+              <ion-list class="details-list">
+                @for (detail of pokemonDetails; track detail.label) {
+                  <ion-item lines="full" detail="false" class="detail-item">
+                    <ion-icon name="information-circle" slot="start" [color]="getIconColor(detail.label)"></ion-icon>
+                    <ion-label>
+                      <h2>{{ detail.label }}</h2>
+                      <p>{{ detail.value }}</p>
+                    </ion-label>
+                  </ion-item>
+                }
+              </ion-list>
+            </div>
           }
-        </ion-list>
 
-        <div class="types-container">
-          @for (type of pokemon.types; track type.type.name) {
-            <ion-chip [class]="'type-' + type.type.name">
-              {{ type.type.name }}
-            </ion-chip>
+          @if (selectedSegment === 'stats') {
+            <div class="stats-container">
+              <ion-list class="stats-list">
+                @for (stat of pokemon.stats; track stat.stat.name) {
+                  <ion-item lines="full" class="stat-item">
+                    <ion-label>
+                      <h2>{{ getStatName(stat.stat.name) }}</h2>
+                      <ion-progress-bar [value]="stat.base_stat / 255" [color]="getStatColor(stat.base_stat)"></ion-progress-bar>
+                      <div class="stat-value">{{ stat.base_stat }}</div>
+                    </ion-label>
+                  </ion-item>
+                }
+              </ion-list>
+            </div>
           }
+        </div>
+
+        <div class="actions-container">
+          <ion-button expand="block" (click)="goBack()">
+            <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+            Voltar para a lista
+          </ion-button>
+          <ion-button expand="block" color="warning" (click)="toggleFavorite()">
+            <ion-icon [name]="isFavorite ? 'heart' : 'heart-outline'" slot="start"></ion-icon>
+            {{ isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos' }}
+          </ion-button>
         </div>
       </div>
     }
   </div>
+
+  <!-- Botão flutuante para navegação rápida -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="light">
+      <ion-icon name="menu-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="danger" routerLink="/home">
+        <ion-icon name="home"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="primary" (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="warning" (click)="toggleFavorite()">
+        <ion-icon [name]="isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>
