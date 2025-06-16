@@ -1,36 +1,59 @@
-# Pokedex App
+# Pokedex App - Ionic com Angular
 
-Uma aplicação móvel desenvolvida com Ionic e Angular que consome a PokeAPI para exibir informações sobre Pokémons.
+Este projeto é uma aplicação Pokedex que utiliza a API pública PokeAPI para exibir informações sobre Pokémon, desenvolvida com Ionic e Angular.
 
 ## Abordagem e Padrões de Design
 
-Este projeto foi desenvolvido seguindo uma arquitetura de componentes modular, utilizando padrões de design modernos e boas práticas de desenvolvimento. A aplicação é responsiva e funciona bem em diferentes orientações de dispositivos móveis.
+1. **Arquitetura Modular**: Componentes e serviços são organizados de forma modular para facilitar manutenção e escalabilidade.
 
-A injeção de dependência é amplamente utilizada para gerenciar serviços e componentes, seguindo o padrão de design recomendado pelo Angular. Os serviços são responsáveis por encapsular a lógica de negócio e a comunicação com APIs externas.
+2. **Injeção de Dependência**: Utilizo o sistema de injeção de dependência do Angular para gerenciar serviços como `PokemonService` e `FavoritesService`.
 
-A interface do usuário foi projetada com foco na experiência do usuário, utilizando componentes do Ionic para garantir uma aparência nativa e responsiva. A navegação é intuitiva e a aplicação oferece feedback visual para ações do usuário.
+3. **Componentes Standalone**: Aproveitando os recursos mais recentes do Angular, todos os componentes são standalone para melhor encapsulamento.
+
+4. **Padrão Observable**: Implementei o padrão Observable com RxJS para gerenciar fluxos de dados assíncronos e estado da aplicação.
+
+5. **Cache Inteligente**: Sistema de cache implementado para melhorar a performance e reduzir chamadas desnecessárias à API.
+
+6. **Design Responsivo**: Interface adaptativa para diferentes tamanhos de tela e orientações (retrato/paisagem).
+
+7. **Tratamento de Erros**: Implementação robusta de tratamento de erros com feedback visual para o usuário.
+
+8. **Lazy Loading**: Carregamento sob demanda de imagens e dados para melhorar a performance inicial.
+
+9. **Animações Sutis**: Adicionei animações sutis para melhorar a experiência do usuário sem comprometer a performance.
+
+10. **Tema Consistente**: Utilização de variáveis CSS e temas do Ionic para manter consistência visual em toda a aplicação.
 
 ## Funcionalidades
 
-- Lista de Pokémons com paginação infinita
-- Detalhes de cada Pokémon com informações completas
-- Favoritar Pokémons e visualizá-los em uma lista separada
-- Design responsivo para diferentes tamanhos de tela e orientações
-- Pull-to-refresh para atualizar os dados
-
-## Tecnologias Utilizadas
-
-- Angular 17
-- Ionic 7
-- TypeScript
-- RxJS
-- PokeAPI
+- Lista de Pokémon com paginação infinita
+- Detalhes completos de cada Pokémon
+- Sistema de favoritos persistente
+- Busca por nome de Pokémon
+- Interface responsiva para diferentes dispositivos
+- Suporte a modo retrato e paisagem
 
 ## Como Executar
 
-1. Clone este repositório
-2. Instale as dependências: `npm install`
-3. Execute o projeto: `ng serve` ou `ionic serve`
+```bash
+# Instalar dependências
+npm install
+
+# Iniciar servidor de desenvolvimento
+npm start
+
+# Construir para produção
+npm run build
+```
+
+## Tecnologias Utilizadas
+
+- Ionic 7
+- Angular 17
+- RxJS
+- TypeScript
+- SCSS
+- PokeAPI
 
 ## Estrutura do Projeto
 

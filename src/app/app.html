@@ -1,28 +1,16 @@
 <ion-app>
   <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>{{ title }}</ion-title>
+    <ion-toolbar color="danger">
+      <ion-title>
+        <div class="header-content">
+          <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png" alt="PokéAPI" class="header-logo">
+          <span>{{ title }}</span>
+    </div>
+      </ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
     <router-outlet></router-outlet>
   </ion-content>
-
-  <ion-footer>
-    <ion-toolbar color="light">
-      <ion-tabs>
-        <ion-tab-bar slot="bottom">
-          <ion-tab-button routerLink="/pokemons" routerLinkActive="tab-selected">
-            <ion-icon name="list"></ion-icon>
-            <ion-label>Pokémons</ion-label>
-          </ion-tab-button>
-          <ion-tab-button routerLink="/favorites" routerLinkActive="tab-selected">
-            <ion-icon name="star"></ion-icon>
-            <ion-label>Favoritos</ion-label>
-          </ion-tab-button>
-        </ion-tab-bar>
-      </ion-tabs>
-    </ion-toolbar>
-  </ion-footer>
 </ion-app> 

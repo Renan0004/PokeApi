@@ -3,13 +3,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 200px;
+  height: 300px;
+  
+  ion-spinner {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: var(--ion-color-medium);
+  }
 }
 
 .pokemon-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  animation: fade-in 0.5s ease-in-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .pokemon-header {
@@ -18,6 +37,10 @@
   align-items: center;
   width: 100%;
   margin-bottom: 20px;
+  background: linear-gradient(135deg, #f6f6f6 0%, #e9e9e9 100%);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .pokemon-image-container {
@@ -25,12 +48,21 @@
   width: 200px;
   height: 200px;
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pokemon-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
 .pokemon-id {
@@ -42,25 +74,68 @@
   padding: 5px 10px;
   border-radius: 10px 0 0 0;
   font-weight: bold;
+  font-size: 0.9rem;
 }
 
 .pokemon-name {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: bold;
   margin: 10px 0;
   text-transform: capitalize;
+  color: var(--ion-color-dark);
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+ion-segment {
+  --background: transparent;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  
+  ion-segment-button {
+    --indicator-color: var(--ion-color-primary);
+    --color-checked: var(--ion-color-primary);
+    --color: var(--ion-color-medium);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
 }
 
 .details-list {
   width: 100%;
   margin-top: 20px;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  
+  ion-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --inner-padding-end: 0;
+    
+    &:not(:last-child) {
+      --border-color: rgba(0, 0, 0, 0.05);
+      --border-width: 0 0 1px 0;
+      --border-style: solid;
+    }
+  }
 }
 
 ion-item h2 {
   font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--ion-color-primary);
+  margin-bottom: 5px;
+}
+
+ion-item p {
   font-size: 1rem;
+  color: var(--ion-color-dark);
+  white-space: normal;
 }
 
 .types-container {
@@ -68,11 +143,20 @@ ion-item h2 {
   justify-content: center;
   flex-wrap: wrap;
   margin: 20px 0;
+  gap: 10px;
 }
 
 ion-chip {
-  margin: 5px;
+  padding: 8px 15px;
+  font-weight: 600;
   text-transform: capitalize;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
 /* Pokemon type colors */
@@ -174,23 +258,81 @@ ion-chip {
   }
   
   .pokemon-name {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+  }
+  
+  ion-item h2 {
+    font-size: 1rem;
+  }
+  
+  ion-item p {
+    font-size: 0.9rem;
   }
 }
 
 /* Landscape orientation */
 @media (orientation: landscape) {
   .pokemon-container {
-    max-width: 800px;
-    margin: 0 auto;
+    padding: 10px;
   }
   
   .pokemon-header {
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
+    padding: 15px;
   }
   
   .pokemon-image-container {
     margin-right: 20px;
+    margin-bottom: 0;
+  }
+  
+  .pokemon-name {
+    font-size: 2rem;
+  }
+  
+  .details-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 10px;
+    
+    ion-item {
+      border-radius: 10px;
+      margin: 5px;
+      --background: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+/* Tablet and larger screens */
+@media (min-width: 768px) {
+  .pokemon-container {
+    padding: 20px;
+  }
+  
+  .pokemon-header {
+    flex-direction: row;
+    justify-content: center;
+    gap: 40px;
+  }
+  
+  .pokemon-image-container {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .pokemon-name {
+    font-size: 2.5rem;
+  }
+  
+  .details-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 15px;
+  }
+  
+  ion-segment {
+    max-width: 500px;
   }
 }

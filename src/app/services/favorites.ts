@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PokemonDetail } from './pokemon';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, Inject } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +11,20 @@ export class FavoritesService {
   private storageKey = 'favorite_pokemons';
   private favoritesSubject = new BehaviorSubject<number[]>([]);
   public favorites$ = this.favoritesSubject.asObservable();
+  private isBrowser: boolean;
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.loadFavorites();
   }
 
   private loadFavorites(): void {
+    if (!this.isBrowser) {
+      // Se não estamos no navegador, inicialize com array vazio
+      this.favoritesSubject.next([]);
+      return;
+    }
+
     const storedFavorites = localStorage.getItem(this.storageKey);
     if (storedFavorites) {
       try {
@@ -30,6 +40,8 @@ export class FavoritesService {
   }
 
   private saveFavorites(favorites: number[]): void {
+    if (!this.isBrowser) return;
+    
     localStorage.setItem(this.storageKey, JSON.stringify(favorites));
     this.favoritesSubject.next(favorites);
   }
