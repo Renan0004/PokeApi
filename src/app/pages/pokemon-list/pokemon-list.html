@@ -1,0 +1,54 @@
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Pokémons</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    @if (error) {
+      <ion-text color="danger">
+        <p>{{ error }}</p>
+      </ion-text>
+    }
+
+    @if (loading && pokemons.length === 0) {
+      <div class="loading-container">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Carregando Pokémons...</p>
+      </div>
+    }
+
+    <ion-grid>
+      <ion-row>
+        @for (pokemon of pokemons; track pokemon.id) {
+          <ion-col size="6" size-md="4" size-lg="3">
+            <ion-card [routerLink]="['/pokemons', pokemon.id]">
+              <div class="favorite-button">
+                <ion-button fill="clear" (click)="toggleFavorite(pokemon, $event)">
+                  <ion-icon slot="icon-only" [name]="pokemon.isFavorite ? 'star' : 'star-outline'" 
+                            [color]="pokemon.isFavorite ? 'warning' : 'medium'"></ion-icon>
+                </ion-button>
+              </div>
+              <ion-img [src]="pokemon.imageUrl" alt="{{ pokemon.name }}" class="pokemon-image"></ion-img>
+              <ion-card-header>
+                <ion-card-title class="ion-text-center ion-text-capitalize">{{ pokemon.name }}</ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Carregando mais Pokémons...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+</ion-content>

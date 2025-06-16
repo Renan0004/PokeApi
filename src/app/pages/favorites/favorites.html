@@ -1,0 +1,60 @@
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Favoritos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    @if (error) {
+      <ion-text color="danger">
+        <p>{{ error }}</p>
+      </ion-text>
+    }
+
+    @if (loading) {
+      <div class="loading-container">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Carregando favoritos...</p>
+      </div>
+    }
+
+    @if (favoritePokemons.length === 0 && !loading) {
+      <div class="empty-state">
+        <ion-icon name="star" size="large"></ion-icon>
+        <h2>Nenhum Pokémon favorito</h2>
+        <p>Adicione Pokémons aos seus favoritos para vê-los aqui.</p>
+        <ion-button routerLink="/pokemons" fill="outline">
+          Explorar Pokémons
+        </ion-button>
+      </div>
+    }
+
+    @if (favoritePokemons.length > 0) {
+      <ion-list>
+        @for (pokemon of favoritePokemons; track pokemon.id) {
+          <ion-item [routerLink]="['/pokemons', pokemon.id]" detail>
+            <ion-avatar slot="start">
+              <img [src]="pokemon.imageUrl" [alt]="pokemon.name">
+            </ion-avatar>
+            <ion-label>
+              <h2 class="ion-text-capitalize">{{ pokemon.name }}</h2>
+              <p>
+                @for (type of pokemon.types; track type) {
+                  <ion-badge [class]="'type-' + type">{{ type }}</ion-badge>
+                }
+              </p>
+            </ion-label>
+            <ion-button slot="end" fill="clear" (click)="removeFromFavorites(pokemon, $event)">
+              <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
+            </ion-button>
+          </ion-item>
+        }
+      </ion-list>
+    }
+  </div>
+</ion-content>

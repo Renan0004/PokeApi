@@ -1,0 +1,74 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-button (click)="goBack()">
+          <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title *ngIf="pokemon" class="ion-text-capitalize">{{ pokemon.name }}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="toggleFavorite()">
+          <ion-icon slot="icon-only" [name]="isFavorite ? 'star' : 'star-outline'" 
+                    [color]="isFavorite ? 'warning' : 'light'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    @if (error) {
+      <ion-text color="danger">
+        <p>{{ error }}</p>
+      </ion-text>
+    }
+
+    @if (loading) {
+      <div class="loading-container">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Carregando detalhes...</p>
+      </div>
+    }
+
+    @if (pokemon && !loading) {
+      <div class="pokemon-container">
+        <div class="pokemon-header">
+          <div class="pokemon-image-container">
+            <img [src]="pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default" 
+                 alt="{{ pokemon.name }}" class="pokemon-image">
+            <div class="pokemon-id">#{{ pokemon.id.toString().padStart(3, '0') }}</div>
+          </div>
+          <h1 class="pokemon-name ion-text-capitalize">{{ pokemon.name }}</h1>
+        </div>
+
+        <ion-segment value="details" class="ion-margin-top">
+          <ion-segment-button value="details">
+            <ion-label>Detalhes</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="stats">
+            <ion-label>Status</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+
+        <ion-list class="details-list">
+          @for (detail of pokemonDetails; track detail.label) {
+            <ion-item>
+              <ion-label>
+                <h2>{{ detail.label }}</h2>
+                <p>{{ detail.value }}</p>
+              </ion-label>
+            </ion-item>
+          }
+        </ion-list>
+
+        <div class="types-container">
+          @for (type of pokemon.types; track type.type.name) {
+            <ion-chip [class]="'type-' + type.type.name">
+              {{ type.type.name }}
+            </ion-chip>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</ion-content>

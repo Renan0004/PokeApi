@@ -1,0 +1,57 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@ionic/angular/css/core.css';
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
+
+:root {
+  --ion-color-primary: #ee1515;
+  --ion-color-primary-rgb: 238, 21, 21;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #d11212;
+  --ion-color-primary-tint: #f02c2c;
+
+  --ion-color-secondary: #3b4cca;
+  --ion-color-secondary-rgb: 59, 76, 202;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #3443b2;
+  --ion-color-secondary-tint: #4f5ecf;
+
+  --ion-color-tertiary: #ffde00;
+  --ion-color-tertiary-rgb: 255, 222, 0;
+  --ion-color-tertiary-contrast: #000000;
+  --ion-color-tertiary-contrast-rgb: 0, 0, 0;
+  --ion-color-tertiary-shade: #e0c300;
+  --ion-color-tertiary-tint: #ffe11a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+ion-content {
+  --background: #f5f5f5;
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) {
+  ion-content {
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+  }
+}
