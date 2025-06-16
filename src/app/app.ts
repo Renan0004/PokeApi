@@ -16,7 +16,7 @@ export class App implements OnInit {
   constructor(public router: Router) {}
 
   ngOnInit() {
-    console.log('App component initialized');
+    console.log('Componente App inicializado');
   }
 
   navigateToPokemons() {

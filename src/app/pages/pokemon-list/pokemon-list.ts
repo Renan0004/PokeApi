@@ -42,22 +42,22 @@ export class PokemonList implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('PokemonList component initialized');
+    console.log('Componente PokemonList inicializado');
     this.loadPokemons();
   }
 
   loadPokemons(event?: any) {
     this.loading = true;
     this.error = null;
-    console.log(`Loading pokemons with offset ${this.offset} and limit ${this.limit}`);
+    console.log(`Carregando pokémons com offset ${this.offset} e limit ${this.limit}`);
 
     this.pokemonService.getPokemons(this.offset, this.limit).subscribe({
       next: (response: PokemonListResponse) => {
-        console.log('API response received:', response);
+        console.log('Resposta da API recebida:', response);
         this.totalPokemons = response.count;
         
         const pokemonDetails = response.results.map(pokemon => {
-          // Extract the ID from the URL
+          // Extrair o ID da URL
           const urlParts = pokemon.url.split('/');
           const id = parseInt(urlParts[urlParts.length - 2], 10);
           
@@ -70,14 +70,14 @@ export class PokemonList implements OnInit {
           };
         });
         
-        console.log('Processed pokemon details:', pokemonDetails);
+        console.log('Detalhes de pokémon processados:', pokemonDetails);
         this.updatePokemonList(pokemonDetails, event);
         
         // Verificar se todos os pokémons foram carregados
         this.allPokemonsLoaded = this.pokemons.length >= this.totalPokemons;
       },
       error: (err) => {
-        console.error('Error loading pokemons:', err);
+        console.error('Erro ao carregar pokémons:', err);
         this.error = 'Erro ao carregar Pokémons. Tente novamente.';
         this.loading = false;
         if (event) {
@@ -107,7 +107,7 @@ export class PokemonList implements OnInit {
     this.offset += this.limit;
     this.loadPokemons(event);
     
-    // Disable infinite scroll if all pokemons are loaded
+    // Desativar o scroll infinito se todos os pokémons estiverem carregados
     if (this.offset + this.limit >= this.totalPokemons) {
       event.target.disabled = true;
     }
@@ -152,7 +152,7 @@ export class PokemonList implements OnInit {
   }
 
   doRefresh(event: any) {
-    console.log('Refreshing Pokemon list');
+    console.log('Atualizando lista de Pokémon');
     this.offset = 0;
     this.pokemons = [];
     this.filteredPokemons = [];

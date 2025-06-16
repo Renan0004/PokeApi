@@ -100,7 +100,7 @@ export class PokemonDetails implements OnInit {
     if (!this.species) return 'Carregando...';
     
     const flavorText = this.species.flavor_text_entries.find(entry => 
-      entry.language.name === 'en' || entry.language.name === 'pt-br'
+      entry.language.name === 'pt-br' || entry.language.name === 'en'
     );
     
     return flavorText ? flavorText.flavor_text.replace(/\n/g, ' ') : 'Sem descrição disponível';
@@ -110,7 +110,7 @@ export class PokemonDetails implements OnInit {
     if (!this.species) return 'Desconhecido';
     
     const genus = this.species.genera.find(g => 
-      g.language.name === 'en' || g.language.name === 'pt-br'
+      g.language.name === 'pt-br' || g.language.name === 'en'
     );
     
     return genus ? genus.genus : 'Pokémon';
@@ -248,14 +248,13 @@ export class PokemonDetails implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: `Pokémon: ${this.pokemon.name}`,
-        text: `Confira este Pokémon: ${this.pokemon.name} #${this.pokemon.id}`,
-        url: `https://pokeapi.co/api/v2/pokemon/${this.pokemon.id}`
-      }).catch(error => {
-        console.error('Erro ao compartilhar:', error);
-        this.presentToast('Não foi possível compartilhar. Tente novamente.');
-      });
+        text: `Confira este Pokémon: ${this.pokemon.name}`,
+        url: window.location.href,
+      })
+      .then(() => console.log('Compartilhado com sucesso'))
+      .catch((error) => console.log('Erro ao compartilhar', error));
     } else {
-      this.presentToast('Compartilhamento não suportado neste navegador.');
+      this.presentToast('Compartilhamento não suportado neste navegador');
     }
   }
 }

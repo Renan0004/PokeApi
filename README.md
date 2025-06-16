@@ -1,4 +1,4 @@
-# Pokedex App - Ionic com Angular
+# Aplicativo Pokedex - Ionic com Angular
 
 Este projeto é uma aplicação Pokedex que utiliza a API pública PokeAPI para exibir informações sobre Pokémon, desenvolvida com Ionic e Angular.
 
@@ -18,7 +18,7 @@ Este projeto é uma aplicação Pokedex que utiliza a API pública PokeAPI para 
 
 7. **Tratamento de Erros**: Implementação robusta de tratamento de erros com feedback visual para o usuário.
 
-8. **Lazy Loading**: Carregamento sob demanda de imagens e dados para melhorar a performance inicial.
+8. **Carregamento Sob Demanda**: Carregamento sob demanda de imagens e dados para melhorar a performance inicial.
 
 9. **Animações Sutis**: Adicionei animações sutis para melhorar a experiência do usuário sem comprometer a performance.
 

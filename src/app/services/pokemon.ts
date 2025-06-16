@@ -93,7 +93,7 @@ export class PokemonService {
     private http: HttpClient,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
-    console.log('PokemonService initialized');
+    console.log('Serviço PokemonService inicializado');
     this.isBrowser = isPlatformBrowser(platformId);
     this.loadCacheFromStorage();
   }
@@ -153,20 +153,20 @@ export class PokemonService {
       return of(this.cachedResponses[cacheKey]);
     }
 
-    console.log(`Calling API: ${this.apiUrl}/pokemon?offset=${offset}&limit=${limit}`);
+    console.log(`Chamando API: ${this.apiUrl}/pokemon?offset=${offset}&limit=${limit}`);
     
     return this.http.get<PokemonListResponse>(`${this.apiUrl}/pokemon?offset=${offset}&limit=${limit}`)
       .pipe(
         retry(2), // Tentar novamente até 2 vezes em caso de falha
         timeout(this.timeoutDuration),
         tap(response => {
-          console.log('API response:', response);
+          console.log('Resposta da API:', response);
           // Salvar no cache
           this.cachedResponses[cacheKey] = response;
           this.saveCache();
         }),
         catchError(error => {
-          console.error('Error fetching pokemons:', error);
+          console.error('Erro ao buscar pokémons:', error);
           return throwError(() => new Error('Falha ao carregar a lista de Pokémon. Por favor, tente novamente mais tarde.'));
         }),
         // Compartilhar a mesma resposta para múltiplas inscrições
@@ -183,20 +183,20 @@ export class PokemonService {
       return of(this.cachedResponses[cacheKey]);
     }
     
-    console.log(`Fetching details for pokemon: ${id}`);
+    console.log(`Buscando detalhes do pokémon: ${id}`);
     
     return this.http.get<PokemonDetail>(`${this.apiUrl}/pokemon/${id}`)
       .pipe(
         retry(2), // Tentar novamente até 2 vezes em caso de falha
         timeout(this.timeoutDuration),
         tap(response => {
-          console.log('Pokemon detail response:', response);
+          console.log('Resposta de detalhes do Pokémon:', response);
           // Salvar no cache
           this.cachedResponses[cacheKey] = response;
           this.saveCache();
         }),
         catchError(error => {
-          console.error(`Error fetching pokemon ${id}:`, error);
+          console.error(`Erro ao buscar pokémon ${id}:`, error);
           return throwError(() => new Error(`Falha ao carregar os detalhes do Pokémon ${id}. Por favor, tente novamente mais tarde.`));
         }),
         shareReplay(1)
@@ -217,13 +217,13 @@ export class PokemonService {
         retry(2), // Tentar novamente até 2 vezes em caso de falha
         timeout(this.timeoutDuration),
         tap(response => {
-          console.log('Pokemon species response:', response);
+          console.log('Resposta de espécies do Pokémon:', response);
           // Salvar no cache
           this.cachedResponses[cacheKey] = response;
           this.saveCache();
         }),
         catchError(error => {
-          console.error(`Error fetching pokemon species ${id}:`, error);
+          console.error(`Erro ao buscar espécies do pokémon ${id}:`, error);
           return throwError(() => new Error(`Falha ao carregar as informações da espécie do Pokémon ${id}. Por favor, tente novamente mais tarde.`));
         }),
         shareReplay(1)
@@ -232,9 +232,9 @@ export class PokemonService {
 
   getEnglishFlavorText(species: PokemonSpecies): string {
     const englishEntry = species.flavor_text_entries.find(
-      entry => entry.language.name === 'en'
+      entry => entry.language.name === 'en' || entry.language.name === 'pt-br'
     );
-    return englishEntry ? englishEntry.flavor_text.replace(/\f/g, ' ') : 'No description available.';
+    return englishEntry ? englishEntry.flavor_text.replace(/\f/g, ' ') : 'Sem descrição disponível.';
   }
 
   getImageUrl(id: number): string {

@@ -31,7 +31,7 @@ export class FavoritesService {
         const favorites = JSON.parse(storedFavorites);
         this.favoritesSubject.next(favorites);
       } catch (error) {
-        console.error('Error parsing favorites from localStorage:', error);
+        console.error('Erro ao analisar favoritos do localStorage:', error);
         this.favoritesSubject.next([]);
       }
     } else {

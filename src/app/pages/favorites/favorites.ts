@@ -28,7 +28,7 @@ export class Favorites implements OnInit {
   ngOnInit() {
     this.loadFavorites();
     
-    // Subscribe to changes in favorites
+    // Inscrever para mudanças nos favoritos
     this.favoritesService.favorites$.subscribe(() => {
       this.loadFavorites();
     });
@@ -44,20 +44,20 @@ export class Favorites implements OnInit {
     
     this.loading = true;
     
-    // Create an array of observables for each pokemon detail request
+    // Criar um array de observables para cada requisição de detalhes de pokémon
     const requests = favoriteIds.map(id => 
       this.pokemonService.getPokemonDetail(id).pipe(
         catchError(error => {
-          console.error(`Error fetching pokemon ${id}:`, error);
+          console.error(`Erro ao buscar pokémon ${id}:`, error);
           return of(null);
         })
       )
     );
     
-    // Execute all requests in parallel
+    // Executar todas as requisições em paralelo
     forkJoin(requests).subscribe({
       next: (results) => {
-        // Filter out any null results from failed requests
+        // Filtrar resultados nulos de requisições que falharam
         this.favoritePokemons = results
           .filter(pokemon => pokemon !== null)
           .map((pokemon: PokemonDetail) => ({
@@ -71,7 +71,7 @@ export class Favorites implements OnInit {
       error: (err) => {
         this.error = 'Erro ao carregar Pokémons favoritos';
         this.loading = false;
-        console.error('Error loading favorite pokemons:', err);
+        console.error('Erro ao carregar pokémons favoritos:', err);
       }
     });
   }
